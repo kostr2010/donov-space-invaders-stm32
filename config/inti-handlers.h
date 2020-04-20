@@ -16,7 +16,11 @@ void TIM1_BRK_UP_TRG_COM_IRQHandler(void) {
 
   LL_TIM_ClearFlag_UPDATE(TIM1);
 
-  tick = (tick + 1) % 1000;
+  tick = (tick + 1) % 100;
+}
+
+uint8_t SysTick_GetTick() {
+  return tick;
 }
 
 #endif

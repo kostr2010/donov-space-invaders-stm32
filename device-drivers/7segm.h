@@ -2,6 +2,7 @@
 #define __7SEGM_H_INCLUDED__
 
 #include "../config/config.h"
+#include "../config/inti-handlers.h"
 
 // ====================
 // 7SEGM
@@ -100,24 +101,25 @@ void SetSegm(GPIO_TypeDef* port) {
   LL_GPIO_SetPinMode(port, DIOD_DP, LL_GPIO_MODE_OUTPUT);
 }
 
-// // not message, but pins! separate conversion function
-// void Segm_SetMessage(GPIO_TypeDef* port, const char* msg, uint8_t tick) {
-//   uint32_t port_state = LL_GPIO_ReadOutputPort(GPIOC);
+void Segm_SetNum(GPIO_TypeDef* port, uint32_t num) {
+  uint32_t div[4]     = {1, 10, 100, 1000};
+  uint32_t port_state = LL_GPIO_ReadOutputPort(GPIOC);
+  uint8_t  tick_cur   = SysTick_GetTick() % 4;
+  uint32_t num_cur    = (num / div[tick_cur]) % 10;
 
-//   int div[4] = {1, 10, 100, 1000};
+  port_state = (port_state & ~SEGM_USED_PINS) | SEGM_NUMBERS[num_cur] | SEGM_QUARTERS[tick_cur];
 
-//   port_state = ((port_state & ~pins_used) | numbers[(num / div[tick]) % 10]) | quarters[tick];
-//   LL_GPIO_WriteOutputPort(port, port_state);
+  LL_GPIO_WriteOutputPort(port, port_state);
 
-//   /*
-//    * Example:
-//    * 01100101 <= Input
-//    * mask = 111 (pins allowed to be changed)
-//    * ~mask = 11111000 (inverted mask sets remaing bits to one)
-//    * result = result & ~mask (zero only first three bits)
-//    * result = result | 001 (modify first three bits)
-//    * result -> 01100001
-//    */
-// }
+  /*
+   * Example:
+   * 01100101 <= Input
+   * mask = 111 (pins allowed to be changed)
+   * ~mask = 11111000 (inverted mask sets remaing bits to one)
+   * result = result & ~mask (zero only first three bits)
+   * result = result | 001 (modify first three bits)
+   * result -> 01100001
+   */
+}
 
 #endif
