@@ -11,7 +11,7 @@
 // ENCODER HANDLER
 
 void EXTI0_1_IRQHandler(void) {
-  static EncoderState state_encoder = {5, 10, 3, Undefined};
+  static EncoderState state_encoder = {5, 10, 2, Undefined};
 
   unsigned int rot = LL_TIM_GetCounterMode(TIM2);
 
@@ -51,7 +51,20 @@ void EXTI2_3_IRQHandler(void) {
   if (LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_2) == 0)
     return;
 
-  // TODO : do button debounce interrupt
+  //   static ButtonState state_button = {0, 10, 5, Off};
+
+  //   if (LL_GPIO_IsInputPinSet(GPIOA, PIN_2)) {
+  //     if (state_button.status == On)
+  //       state_button.status = On;
+  //     else
+  //       state_button.status = Off;
+  //   }
+
+  //   if (state_button.status == On) {
+  //     LL_GPIO_SetOutputPin(GPIOB, PIN_15);
+  //   } else if (state_button.status == Off) {
+  //     LL_GPIO_ResetOutputPin(GPIOB, PIN_15);
+  //   }
 
   LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_2);
 }

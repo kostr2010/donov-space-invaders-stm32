@@ -30,7 +30,7 @@ int main() {
   uint32_t num = 0;
 
   while (1) {
-    if (Button_GetStatus() == On)
+    if (Button_GetStatus() == Turn_on)
       num++;
 
     Segm_SetNum(GPIOC, num);

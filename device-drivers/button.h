@@ -71,7 +71,7 @@ typedef struct {
 } ButtonState;
 
 // no interrupt version. interrupt version can be found in exti-handlers.h (not implemented yet)
-static ButtonState button_state = {0, 60, 15, Off};
+static ButtonState button_state = {0, 50, 10, Off};
 
 void Button_UpdateState(GPIO_TypeDef* port, unsigned int pin) {
   if (LL_GPIO_IsInputPinSet(port, pin) && button_state.counter_cur < button_state.counter_max)
@@ -79,16 +79,27 @@ void Button_UpdateState(GPIO_TypeDef* port, unsigned int pin) {
   else if (button_state.counter_cur > 0)
     button_state.counter_cur--;
 
-  if (button_state.status == On && button_state.counter_cur < button_state.delta) {
-    button_state.status = Turn_off;
-  } else if (button_state.status == Off &&
-             button_state.counter_cur > button_state.counter_max - button_state.delta) {
+  if (button_state.status == Off &&
+      button_state.counter_cur >= button_state.counter_max - button_state.delta)
     button_state.status = Turn_on;
-  } else if (button_state.status == Turn_on) {
+  else if (button_state.counter_cur > button_state.counter_max - button_state.delta)
     button_state.status = On;
-  } else if (button_state.status == Turn_off) {
+  else if (button_state.status == On && button_state.counter_cur <= button_state.delta)
+    button_state.status = Turn_off;
+  else if (button_state.counter_cur < button_state.delta)
     button_state.status = Off;
-  }
+
+  // if (button_state.status == On && button_state.counter_cur < button_state.delta) {
+  //   button_state.status = Turn_off;
+  // } else if (button_state.status == Off &&
+  //            button_state.counter_cur > button_state.counter_max - button_state.delta) {
+  //   button_state.status = Turn_on;
+  // } else if (button_state.status == Turn_on &&
+  //            button_state.counter_cur > button_state.counter_max - button_state.delta) {
+  //   button_state.status = On;
+  // } else if (button_state.status == Turn_off && button_state.counter_cur < button_state.delta) {
+  //   button_state.status = Off;
+  // }
 }
 
 enum ButtonStatus Button_GetStatus() {

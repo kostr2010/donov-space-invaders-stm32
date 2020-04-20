@@ -56,7 +56,7 @@ void SysTickConfig() {
   LL_APB1_GRP2_EnableClock(LL_APB1_GRP2_PERIPH_TIM1);
   LL_TIM_SetPrescaler(TIM1, 48 - 1);
   LL_TIM_SetCounterMode(TIM1, LL_TIM_COUNTERMODE_UP);
-  LL_TIM_SetAutoReload(TIM1, 100 - 1);
+  LL_TIM_SetAutoReload(TIM1, 1000 - 1);
 
   // Enable interrupts
   LL_TIM_EnableIT_UPDATE(TIM1);
