@@ -73,29 +73,29 @@ typedef struct {
 
 // no interrupt version. interrupt version can be found in exti-handlers.h
 
-// void Button_UpdateState(GPIO_TypeDef* port, unsigned int pin, ButtonState* state_current) {
-//   if (state_current == NULL)
-//     return;
+void Button_UpdateState(GPIO_TypeDef* port, unsigned int pin, ButtonState* state_current) {
+  if (state_current == NULL)
+    return;
 
-//   uint8_t           cur    = state_current->counter_cur;
-//   uint8_t           max    = state_current->counter_max;
-//   uint8_t           delta  = state_current->delta;
-//   enum ButtonStatus status = state_current->status;
+  uint8_t           cur    = state_current->counter_cur;
+  uint8_t           max    = state_current->counter_max;
+  uint8_t           delta  = state_current->delta;
+  enum ButtonStatus status = state_current->status;
 
-//   if (LL_GPIO_IsInputPinSet(port, pin) && cur < max)
-//     state_current->counter_cur++;
-//   else if (cur > 0)
-//     state_current->counter_cur--;
+  if (LL_GPIO_IsInputPinSet(port, pin) && cur < max)
+    state_current->counter_cur++;
+  else if (cur > 0)
+    state_current->counter_cur--;
 
-//   if (status == On && cur < delta) {
-//     state_current->status = Turn_off;
-//   } else if (status == Off && cur > max - delta) {
-//     state_current->status = Turn_on;
-//   } else if (status == Turn_on) {
-//     state_current->status = On;
-//   } else if (status == Turn_off) {
-//     state_current->status = Off;
-//   }
-// }
+  if (status == On && cur < delta) {
+    state_current->status = Turn_off;
+  } else if (status == Off && cur > max - delta) {
+    state_current->status = Turn_on;
+  } else if (status == Turn_on) {
+    state_current->status = On;
+  } else if (status == Turn_off) {
+    state_current->status = Off;
+  }
+}
 
 #endif

@@ -51,31 +51,7 @@ void EXTI2_3_IRQHandler(void) {
   if (LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_2) == 0)
     return;
 
-  static ButtonState state_button = {0, 10, 3, Off};
-
-  //   if (LL_EXTI_IsEnabledRisingTrig_0_31(LL_EXTI_LINE_2)) {
-  //     LL_GPIO_SetOutputPin(GPIOB, PIN_15);
-  //     state_button.counter_cur++;
-  //   } else {
-  //     LL_GPIO_ResetOutputPin(GPIOB, PIN_15);
-  //     state_button.counter_cur--;
-  //   }
-  //   LL_GPIO_ResetOutputPin(GPIOB, PIN_15);
-  if (LL_GPIO_IsInputPinSet(GPIOA, PIN_2) && state_button.counter_cur < state_button.counter_max)
-    state_button.counter_cur++;
-
-  if (state_button.status == On && state_button.counter_cur < state_button.delta)
-    state_button.status = Off;
-  else if (state_button.status == Off &&
-           state_button.counter_cur > state_button.counter_max - state_button.delta) {
-    state_button.status      = On;
-    state_button.counter_cur = 0;
-  }
-  if (state_button.status == On) {
-    LL_GPIO_SetOutputPin(GPIOB, PIN_15);
-  } else if (state_button.status == Off) {
-    LL_GPIO_ResetOutputPin(GPIOB, PIN_15);
-  }
+  // TODO : do button debounce interrupt
 
   LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_2);
 }

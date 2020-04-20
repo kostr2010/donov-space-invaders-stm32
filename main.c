@@ -20,38 +20,38 @@ int main() {
   SetDiode(GPIOB, PIN_3);
   SetDiode(GPIOB, PIN_4);
   SetDiode(GPIOB, PIN_5);
-  // SetDiode(GPIOC, PIN_8);
+  SetDiode(GPIOC, PIN_8);
   SetDiode(GPIOC, PIN_9);
 
   EXTI_config();
-  //   int rot = 0;
-  // ButtonState state = {60, 0, 15, Off};
-  //   while (1) {
-  //     rot = Encoder_GetRotation(TIM2);
-  //     // Button_UpdateState(GPIOA, PIN_2, &state);
+  int         rot   = 0;
+  ButtonState state = {0, 60, 15, Off};
+  while (1) {
+    // rot = Encoder_GetRotation(TIM2);
+    Button_UpdateState(GPIOA, PIN_2, &state);
 
-  //     // if (state.status == On)
-  //     //   LL_GPIO_SetOutputPin(GPIOB, PIN_15);
-  //     // else if (state.status == Off)
-  //     //   LL_GPIO_ResetOutputPin(GPIOB, PIN_15);
+    if (state.status == On)
+      LL_GPIO_SetOutputPin(GPIOB, PIN_15);
+    else if (state.status == Off)
+      LL_GPIO_ResetOutputPin(GPIOB, PIN_15);
 
-  //     if (rot == 0) {
-  //       LL_GPIO_SetOutputPin(GPIOB, PIN_3);
-  //       LL_GPIO_ResetOutputPin(GPIOB, PIN_4);
-  //       LL_GPIO_ResetOutputPin(GPIOB, PIN_5);
-  //     } else if (rot == 1) {
-  //       LL_GPIO_SetOutputPin(GPIOB, PIN_4);
-  //       LL_GPIO_ResetOutputPin(GPIOB, PIN_3);
-  //       LL_GPIO_ResetOutputPin(GPIOB, PIN_5);
-  //     } else if (rot == 2) {
-  //       LL_GPIO_SetOutputPin(GPIOB, PIN_5);
-  //       LL_GPIO_ResetOutputPin(GPIOB, PIN_3);
-  //       LL_GPIO_ResetOutputPin(GPIOB, PIN_4);
-  //     }
-  //     ///
-  //     // for (int i = 0; i < 100000; i++)
-  //     //   ;
-  //   }
+    // if (rot == 0) {
+    //   LL_GPIO_SetOutputPin(GPIOB, PIN_3);
+    //   LL_GPIO_ResetOutputPin(GPIOB, PIN_4);
+    //   LL_GPIO_ResetOutputPin(GPIOB, PIN_5);
+    // } else if (rot == 1) {
+    //   LL_GPIO_SetOutputPin(GPIOB, PIN_4);
+    //   LL_GPIO_ResetOutputPin(GPIOB, PIN_3);
+    //   LL_GPIO_ResetOutputPin(GPIOB, PIN_5);
+    // } else if (rot == 2) {
+    //   LL_GPIO_SetOutputPin(GPIOB, PIN_5);
+    //   LL_GPIO_ResetOutputPin(GPIOB, PIN_3);
+    //   LL_GPIO_ResetOutputPin(GPIOB, PIN_4);
+    // }
+    ///
+    // for (int i = 0; i < 100000; i++)
+    //   ;
+  }
 
   return 0;
 }

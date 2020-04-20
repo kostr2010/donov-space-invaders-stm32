@@ -8,6 +8,10 @@
 // ====================
 // ENCODER
 
+// static in order to be able to change from the outside context
+static void (*Encoder_handler_left_)(void* params)  = NULL;
+static void (*Encoder_handler_right_)(void* params) = NULL;
+
 int SetEncoder(GPIO_TypeDef* port, TIM_TypeDef* timer, unsigned int pin_l, unsigned int pin_r) {
   PortX_EnableClock(port);
 
@@ -31,6 +35,22 @@ int SetEncoder(GPIO_TypeDef* port, TIM_TypeDef* timer, unsigned int pin_l, unsig
   return 0;
 }
 
+void Encoder_SetHandler_left(void (*Encoder_handler_left)(void* params)) {
+  Encoder_handler_left_ = Encoder_handler_left;
+}
+
+void Encoder_SetHandler_right(void (*Encoder_handler_right)(void* params)) {
+  Encoder_handler_right_ = Encoder_handler_right;
+}
+
+void Encoder_CallHandler_left(void* params) {
+  (*Encoder_handler_left_)(params);
+}
+
+void Encoder_CallHandler_right(void* params) {
+  (*Encoder_handler_left_)(params);
+}
+
 enum EncoderStatus {
   Left,
   Right,
@@ -48,16 +68,15 @@ typedef struct {
 } EncoderState;
 
 // non-interrupt version, interrupt implementation can be found in exti-handlers.h
-
-// int Encoder_GetRotation(TIM_TypeDef* timer) {
-//   switch (LL_TIM_GetCounterMode(timer)) {
-//   case LL_TIM_COUNTERMODE_DOWN:
-//     return 0;
-//   case LL_TIM_COUNTERMODE_UP:
-//     return 1;
-//   default:
-//     return 2;
-//   }
-// }
+enum EncoderStatus Encoder_GetRotation(TIM_TypeDef* timer) {
+  switch (LL_TIM_GetCounterMode(timer)) {
+  case LL_TIM_COUNTERMODE_DOWN:
+    return Left;
+  case LL_TIM_COUNTERMODE_UP:
+    return Right;
+  default:
+    return Undefined;
+  }
+}
 
 #endif
