@@ -92,4 +92,8 @@ void Button_UpdateState(GPIO_TypeDef* port, unsigned int pin) {
   }
 }
 
+enum ButtonStatus Button_GetStatus() {
+  return button_state.status;
+}
+
 #endif

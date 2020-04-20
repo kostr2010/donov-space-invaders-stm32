@@ -11,7 +11,7 @@
 // ENCODER HANDLER
 
 void EXTI0_1_IRQHandler(void) {
-  static EncoderState state_encoder = {5, 10, 2, Undefined};
+  static EncoderState state_encoder = {5, 10, 3, Undefined};
 
   unsigned int rot = LL_TIM_GetCounterMode(TIM2);
 
@@ -54,15 +54,6 @@ void EXTI2_3_IRQHandler(void) {
   // TODO : do button debounce interrupt
 
   LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_2);
-}
-
-// ====================
-// SYS TICK HANDLER
-
-void TIM1_BRK_UP_TRG_COM_IRQHandler(void) {
-  Button_UpdateState(GPIOA, PIN_2);
-
-  LL_TIM_ClearFlag_UPDATE(TIM1);
 }
 
 #endif

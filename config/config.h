@@ -16,13 +16,6 @@
 // ====================
 // RCC (tacting)
 
-#ifndef CLOCKING_CONFIGURED
-#define CLOCKING_CONFIGURED
-#define CLOCKING_CONFIG() clocking_config();
-#else
-#define CLOCKING_CONFIG()
-#endif
-
 void clocking_config(unsigned int flash_lat, unsigned int pll_div, unsigned int pll_mul,
                      unsigned int sysclk_div, unsigned int apb1_div) {
   // setting amount of waiting cycles for FLASH
@@ -59,7 +52,7 @@ void clocking_config(unsigned int flash_lat, unsigned int pll_div, unsigned int 
 
 // static in order to be able to change from the outside context
 void SysTickConfig() {
-  // updating every .1s
+  // setting it up so it updates every .1s
   LL_APB1_GRP2_EnableClock(LL_APB1_GRP2_PERIPH_TIM1);
   LL_TIM_SetPrescaler(TIM1, 48 - 1);
   LL_TIM_SetCounterMode(TIM1, LL_TIM_COUNTERMODE_UP);
@@ -152,14 +145,11 @@ int TimerX_EnableClock(TIM_TypeDef* timer) {
 
 // i couldn't find a way to enable all interrupts parametrically in a beautiful way, so this
 // function is kind of fixed, needs to be updated every time interrupt is added / needed
-
 void EXTI_config() {
   // TODO : find out about GRP1 && GRP2
   LL_APB1_GRP2_EnableClock(LL_APB1_GRP2_PERIPH_SYSCFG);
 
-  // ====================
-  // ENCODER
-
+  // encoder
   LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTA, LL_SYSCFG_EXTI_LINE1);
   LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTA, LL_SYSCFG_EXTI_LINE0);
   LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_1);
@@ -171,20 +161,16 @@ void EXTI_config() {
   LL_EXTI_EnableFallingTrig_0_31(LL_EXTI_LINE_0);
   LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_0);
 
-  // setting interrupt priority
   NVIC_EnableIRQ(EXTI0_1_IRQn);
   NVIC_SetPriority(EXTI0_1_IRQn, 1);
 
-  // ====================
-  // BUTTON
-
+  // button
   LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTA, LL_SYSCFG_EXTI_LINE2);
   LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_2);
 
   // LL_EXTI_EnableFallingTrig_0_31(LL_EXTI_LINE_2);
   LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_2);
 
-  // setting interrupt priority
   NVIC_EnableIRQ(EXTI2_3_IRQn);
   NVIC_SetPriority(EXTI2_3_IRQn, 0);
 }

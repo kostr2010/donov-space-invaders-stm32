@@ -1,5 +1,6 @@
 #include "./config/config.h"
 #include "./config/exti-handlers.h"
+#include "./config/inti-handlers.h"
 
 #include "./input/input.h"
 #include "./output/output.h"
@@ -26,34 +27,11 @@ int main() {
 
   EXTI_config();
 
-  // int rot = 0;
-  // ButtonState state = {0, 60, 15, Off};
-
   while (1) {
-    // rot = Encoder_GetRotation(TIM2);
-    // Button_UpdateState(GPIOA, PIN_2);
-
-    if (button_state.status == On)
+    if (Button_GetStatus() == On)
       LL_GPIO_SetOutputPin(GPIOB, PIN_15);
-    else if (button_state.status == Off)
+    else if (Button_GetStatus() == Off)
       LL_GPIO_ResetOutputPin(GPIOB, PIN_15);
-
-    // if (rot == 0) {
-    //   LL_GPIO_SetOutputPin(GPIOB, PIN_3);
-    //   LL_GPIO_ResetOutputPin(GPIOB, PIN_4);
-    //   LL_GPIO_ResetOutputPin(GPIOB, PIN_5);
-    // } else if (rot == 1) {
-    //   LL_GPIO_SetOutputPin(GPIOB, PIN_4);
-    //   LL_GPIO_ResetOutputPin(GPIOB, PIN_3);
-    //   LL_GPIO_ResetOutputPin(GPIOB, PIN_5);
-    // } else if (rot == 2) {
-    //   LL_GPIO_SetOutputPin(GPIOB, PIN_5);
-    //   LL_GPIO_ResetOutputPin(GPIOB, PIN_3);
-    //   LL_GPIO_ResetOutputPin(GPIOB, PIN_4);
-    // }
-    ///
-    // for (int i = 0; i < 100000; i++)
-    //   ;
   }
 
   return 0;
