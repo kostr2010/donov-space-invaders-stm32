@@ -19,7 +19,8 @@ SOURCES_C = $(wildcard *.c)
 SOURCES_C += $(SOURCES_CORE)
 SOURCES_C += $(SOURCES_PERIPH)
 SOURCES_C += $(SOURCES_LIB)
-
+ 
+DEPS = ./output/output.h ./input/input.h ./config/config.h ./device-drivers/7segm.h ./device-drivers/button.h ./device-drivers/diode.h ./device-drivers/encoder.h ./device-drivers/oled.h ./device-drivers/usart.h
 SOURCES = $(SOURCES_S) $(SOURCES_C)
 OBJS = $(SOURCES_S:.s=.o) $(SOURCES_C:.c=.o)
 
@@ -82,7 +83,7 @@ clean:
 
 # Hardware specific
 
-flash: $(PROJECT).bin
+flash: $(PROJECT).bin $(DEPS)
 	st-flash write $(PROJECT).bin 0x08000000
 
 erase:
@@ -107,7 +108,7 @@ gdb-st-util: $(PROJECT).elf
 
 $(PROJECT).elf: $(OBJS)
 
-%.elf:
+%.elf: 
 	$(LD) $(OBJS) $(LDFLAGS) -o $@
 	$(SIZE) -A $@
 
