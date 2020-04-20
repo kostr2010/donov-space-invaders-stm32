@@ -10,11 +10,42 @@
 // ====================
 // BUTTON
 
-// static in order to be able to change from the outside context
-static void (*Button_handler_on_)(void* params)       = NULL;
-static void (*Button_handler_off_)(void* params)      = NULL;
-static void (*Button_handler_turn_on_)(void* params)  = NULL;
-static void (*Button_handler_turn_off_)(void* params) = NULL;
+// static void (*Button_handler_on_)(void* params)       = NULL;
+// static void (*Button_handler_off_)(void* params)      = NULL;
+// static void (*Button_handler_turn_on_)(void* params)  = NULL;
+// static void (*Button_handler_turn_off_)(void* params) = NULL;
+
+// void Button_SetHandler_on(void (*Button_handler_on)(void* params)) {
+//   Button_handler_on_ = Button_handler_on;
+// }
+
+// void Button_SetHandler_off(void (*Button_handler_off)(void* params)) {
+//   Button_handler_off_ = Button_handler_off;
+// }
+
+// void Button_SetHandler_turn_on(void (*Button_handler_turn_on)(void* params)) {
+//   Button_handler_turn_on_ = Button_handler_turn_on;
+// }
+
+// void Button_SetHandler_turn_off(void (*Button_handler_turn_off)(void* params)) {
+//   Button_handler_turn_off_ = Button_handler_turn_off;
+// }
+
+// void Button_CallHandler_on(void* params) {
+//   (*Button_handler_on_)(params);
+// }
+
+// void Button_CallHandler_off(void* params) {
+//   (*Button_handler_on_)(params);
+// }
+
+// void Button_CallHandler_turn_on(void* params) {
+//   (*Button_handler_on_)(params);
+// }
+
+// void Button_CallHandler_turn_off(void* params) {
+//   (*Button_handler_on_)(params);
+// }
 
 int SetButton(GPIO_TypeDef* port, unsigned int pin) {
   PortX_EnableClock(port);
@@ -23,38 +54,6 @@ int SetButton(GPIO_TypeDef* port, unsigned int pin) {
   LL_GPIO_SetPinPull(port, pin, LL_GPIO_PULL_DOWN);
 
   return 0;
-}
-
-void Button_SetHandler_on(void (*Button_handler_on)(void* params)) {
-  Button_handler_on_ = Button_handler_on;
-}
-
-void Button_SetHandler_off(void (*Button_handler_off)(void* params)) {
-  Button_handler_off_ = Button_handler_off;
-}
-
-void Button_SetHandler_turn_on(void (*Button_handler_turn_on)(void* params)) {
-  Button_handler_turn_on_ = Button_handler_turn_on;
-}
-
-void Button_SetHandler_turn_off(void (*Button_handler_turn_off)(void* params)) {
-  Button_handler_turn_off_ = Button_handler_turn_off;
-}
-
-void Button_CallHandler_on(void* params) {
-  (*Button_handler_on_)(params);
-}
-
-void Button_CallHandler_off(void* params) {
-  (*Button_handler_on_)(params);
-}
-
-void Button_CallHandler_turn_on(void* params) {
-  (*Button_handler_on_)(params);
-}
-
-void Button_CallHandler_turn_off(void* params) {
-  (*Button_handler_on_)(params);
 }
 
 enum ButtonStatus {
@@ -71,7 +70,7 @@ typedef struct {
   enum ButtonStatus status;
 } ButtonState;
 
-// no interrupt version. interrupt version can be found in exti-handlers.h
+// no interrupt version. interrupt version can be found in exti-handlers.h (not implemented yet)
 static ButtonState button_state = {0, 60, 15, Off};
 
 void Button_UpdateState(GPIO_TypeDef* port, unsigned int pin) {

@@ -8,9 +8,24 @@
 // ====================
 // ENCODER
 
-// static in order to be able to change from the outside context
-static void (*Encoder_handler_left_)(void* params)  = NULL;
-static void (*Encoder_handler_right_)(void* params) = NULL;
+// static void (*Encoder_handler_left_)(void* params)  = NULL;
+// static void (*Encoder_handler_right_)(void* params) = NULL;
+
+// void Encoder_SetHandler_left(void (*Encoder_handler_left)(void* params)) {
+//   Encoder_handler_left_ = Encoder_handler_left;
+// }
+
+// void Encoder_SetHandler_right(void (*Encoder_handler_right)(void* params)) {
+//   Encoder_handler_right_ = Encoder_handler_right;
+// }
+
+// void Encoder_CallHandler_left(void* params) {
+//   (*Encoder_handler_left_)(params);
+// }
+
+// void Encoder_CallHandler_right(void* params) {
+//   (*Encoder_handler_left_)(params);
+// }
 
 int SetEncoder(GPIO_TypeDef* port, TIM_TypeDef* timer, unsigned int pin_l, unsigned int pin_r) {
   PortX_EnableClock(port);
@@ -33,22 +48,6 @@ int SetEncoder(GPIO_TypeDef* port, TIM_TypeDef* timer, unsigned int pin_l, unsig
   LL_TIM_EnableCounter(timer);
 
   return 0;
-}
-
-void Encoder_SetHandler_left(void (*Encoder_handler_left)(void* params)) {
-  Encoder_handler_left_ = Encoder_handler_left;
-}
-
-void Encoder_SetHandler_right(void (*Encoder_handler_right)(void* params)) {
-  Encoder_handler_right_ = Encoder_handler_right;
-}
-
-void Encoder_CallHandler_left(void* params) {
-  (*Encoder_handler_left_)(params);
-}
-
-void Encoder_CallHandler_right(void* params) {
-  (*Encoder_handler_left_)(params);
 }
 
 enum EncoderStatus {

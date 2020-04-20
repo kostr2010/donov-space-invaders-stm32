@@ -27,13 +27,13 @@ int main() {
 
   EXTI_config();
 
+  uint32_t num = 0;
+
   while (1) {
     if (Button_GetStatus() == On)
-      LL_GPIO_SetOutputPin(GPIOB, PIN_15);
-    else if (Button_GetStatus() == Off)
-      LL_GPIO_ResetOutputPin(GPIOB, PIN_15);
+      num++;
 
-    Segm_SetNum(GPIOC, 1234);
+    Segm_SetNum(GPIOC, num);
   }
 
   return 0;
