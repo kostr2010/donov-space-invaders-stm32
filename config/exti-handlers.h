@@ -56,4 +56,13 @@ void EXTI2_3_IRQHandler(void) {
   LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_2);
 }
 
+// ====================
+// SYS TICK HANDLER
+
+void TIM1_BRK_UP_TRG_COM_IRQHandler(void) {
+  Button_UpdateState(GPIOA, PIN_2);
+
+  LL_TIM_ClearFlag_UPDATE(TIM1);
+}
+
 #endif

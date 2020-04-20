@@ -1,12 +1,17 @@
 #ifndef __CONFIG_H_INCLUDED__
 #define __CONFIG_H_INCLUDED__
 
+#include <stddef.h>
+
 #include "../core/stm32f051x8.h"
 #include "../plib/stm32f0xx_ll_bus.h"
 #include "../plib/stm32f0xx_ll_exti.h"
 #include "../plib/stm32f0xx_ll_gpio.h"
 #include "../plib/stm32f0xx_ll_rcc.h"
 #include "../plib/stm32f0xx_ll_system.h"
+#include "../plib/stm32f0xx_ll_tim.h"
+
+#include "../device-drivers/button.h"
 
 // ====================
 // RCC (tacting)
@@ -47,6 +52,26 @@ void clocking_config(unsigned int flash_lat, unsigned int pll_div, unsigned int 
   // their prescalers to / 1
   LL_RCC_SetAHBPrescaler(sysclk_div);
   LL_RCC_SetAPB1Prescaler(apb1_div);
+}
+
+// ====================
+// SYS TICK
+
+// static in order to be able to change from the outside context
+void SysTickConfig() {
+  // updating every .1s
+  LL_APB1_GRP2_EnableClock(LL_APB1_GRP2_PERIPH_TIM1);
+  LL_TIM_SetPrescaler(TIM1, 48 - 1);
+  LL_TIM_SetCounterMode(TIM1, LL_TIM_COUNTERMODE_UP);
+  LL_TIM_SetAutoReload(TIM1, 100 - 1);
+
+  // Enable interrupts
+  LL_TIM_EnableIT_UPDATE(TIM1);
+
+  LL_TIM_EnableCounter(TIM1);
+
+  NVIC_EnableIRQ(TIM1_BRK_UP_TRG_COM_IRQn);
+  NVIC_SetPriority(TIM1_BRK_UP_TRG_COM_IRQn, 1);
 }
 
 // ====================
