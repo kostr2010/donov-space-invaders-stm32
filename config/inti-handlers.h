@@ -11,16 +11,26 @@
 
 static uint8_t tick = 0;
 
-void TIM1_BRK_UP_TRG_COM_IRQHandler(void) {
-  Button_UpdateState(GPIOA, PIN_2);
+// void TIM1_BRK_UP_TRG_COM_IRQHandler(void) {
+//   Button_UpdateState(GPIOA, PIN_2);
 
-  LL_TIM_ClearFlag_UPDATE(TIM1);
+//   LL_TIM_ClearFlag_UPDATE(TIM1);
 
-  tick = (tick + 1) % 100;
-}
+//   tick = (tick + 1) % 100;
+// }
 
-uint8_t SysTick_GetTick() {
-  return tick;
+// uint8_t SysTick_GetTick() {
+//   return tick;
+// }
+
+/*
+ * Handler for system timer
+ * Count up to counter_top then switch led
+ * (to make blinking more visible)
+ */
+void SysTick_Handler(void) {
+
+  LL_GPIO_TogglePin(GPIOC, LL_GPIO_PIN_8);
 }
 
 #endif

@@ -50,21 +50,28 @@ void clocking_config(unsigned int flash_lat, unsigned int pll_div, unsigned int 
 // ====================
 // SYS TICK
 
-// static in order to be able to change from the outside context
-void SysTickConfig() {
-  // setting it up so it updates every .1s
-  LL_APB1_GRP2_EnableClock(LL_APB1_GRP2_PERIPH_TIM1);
-  LL_TIM_SetPrescaler(TIM1, 48 - 1);
-  LL_TIM_SetCounterMode(TIM1, LL_TIM_COUNTERMODE_UP);
-  LL_TIM_SetAutoReload(TIM1, 1000 - 1);
+// // static in order to be able to change from the outside context
+// void SysTickConfig() {
+//   // setting it up so it updates every .1s
+//   LL_APB1_GRP2_EnableClock(LL_APB1_GRP2_PERIPH_TIM1);
+//   LL_TIM_SetPrescaler(TIM1, 48 - 1);
+//   LL_TIM_SetCounterMode(TIM1, LL_TIM_COUNTERMODE_UP);
+//   LL_TIM_SetAutoReload(TIM1, 1000 - 1);
 
-  // Enable interrupts
-  LL_TIM_EnableIT_UPDATE(TIM1);
+//   // Enable interrupts
+//   LL_TIM_EnableIT_UPDATE(TIM1);
 
-  LL_TIM_EnableCounter(TIM1);
+//   LL_TIM_EnableCounter(TIM1);
 
-  NVIC_EnableIRQ(TIM1_BRK_UP_TRG_COM_IRQn);
-  NVIC_SetPriority(TIM1_BRK_UP_TRG_COM_IRQn, 1);
+//   NVIC_EnableIRQ(TIM1_BRK_UP_TRG_COM_IRQn);
+//   NVIC_SetPriority(TIM1_BRK_UP_TRG_COM_IRQn, 1);
+// }
+
+static void SysTickConfig(void) {
+  LL_InitTick(48000000, 1000);
+  LL_SYSTICK_EnableIT();
+  NVIC_SetPriority(SysTick_IRQn, 0);
+  return;
 }
 
 // ====================
