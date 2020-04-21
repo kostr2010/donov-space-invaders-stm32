@@ -11,8 +11,6 @@
 #include "../plib/stm32f0xx_ll_system.h"
 #include "../plib/stm32f0xx_ll_tim.h"
 
-#include "../device-drivers/button.h"
-
 // ====================
 // RCC (tacting)
 
@@ -48,30 +46,22 @@ void clocking_config(unsigned int flash_lat, unsigned int pll_div, unsigned int 
 }
 
 // ====================
-// SYS TICK
+// SYSTICK
 
-// // static in order to be able to change from the outside context
-// void SysTickConfig() {
-//   // setting it up so it updates every .1s
-//   LL_APB1_GRP2_EnableClock(LL_APB1_GRP2_PERIPH_TIM1);
-//   LL_TIM_SetPrescaler(TIM1, 48 - 1);
-//   LL_TIM_SetCounterMode(TIM1, LL_TIM_COUNTERMODE_UP);
-//   LL_TIM_SetAutoReload(TIM1, 1000 - 1);
+void SysTickConfig() {
+  // setting it up so it updates every .1s
+  LL_APB1_GRP2_EnableClock(LL_APB1_GRP2_PERIPH_TIM1);
+  LL_TIM_SetPrescaler(TIM1, 48 - 1);
+  LL_TIM_SetCounterMode(TIM1, LL_TIM_COUNTERMODE_UP);
+  LL_TIM_SetAutoReload(TIM1, 1000 - 1);
 
-//   // Enable interrupts
-//   LL_TIM_EnableIT_UPDATE(TIM1);
+  // Enable interrupts
+  LL_TIM_EnableIT_UPDATE(TIM1);
 
-//   LL_TIM_EnableCounter(TIM1);
+  LL_TIM_EnableCounter(TIM1);
 
-//   NVIC_EnableIRQ(TIM1_BRK_UP_TRG_COM_IRQn);
-//   NVIC_SetPriority(TIM1_BRK_UP_TRG_COM_IRQn, 1);
-// }
-
-static void SysTickConfig(void) {
-  LL_InitTick(48000000, 1000);
-  LL_SYSTICK_EnableIT();
-  NVIC_SetPriority(SysTick_IRQn, 0);
-  return;
+  NVIC_EnableIRQ(TIM1_BRK_UP_TRG_COM_IRQn);
+  NVIC_SetPriority(TIM1_BRK_UP_TRG_COM_IRQn, 1);
 }
 
 // ====================
@@ -171,15 +161,15 @@ void EXTI_config() {
   NVIC_EnableIRQ(EXTI0_1_IRQn);
   NVIC_SetPriority(EXTI0_1_IRQn, 1);
 
-  // button
-  LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTA, LL_SYSCFG_EXTI_LINE2);
-  LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_2);
+  // // button
+  // LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTA, LL_SYSCFG_EXTI_LINE2);
+  // LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_2);
 
-  // LL_EXTI_EnableFallingTrig_0_31(LL_EXTI_LINE_2);
-  LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_2);
+  // // LL_EXTI_EnableFallingTrig_0_31(LL_EXTI_LINE_2);
+  // LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_2);
 
-  NVIC_EnableIRQ(EXTI2_3_IRQn);
-  NVIC_SetPriority(EXTI2_3_IRQn, 0);
+  // NVIC_EnableIRQ(EXTI2_3_IRQn);
+  // NVIC_SetPriority(EXTI2_3_IRQn, 0);
 }
 
 #endif

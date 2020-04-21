@@ -11,7 +11,7 @@
 // ENCODER HANDLER
 
 void EXTI0_1_IRQHandler(void) {
-  static EncoderState state_encoder = {5, 10, 2, Undefined};
+  static EncoderState state_encoder = {10, 20, 5, Undefined};
 
   unsigned int rot = LL_TIM_GetCounterMode(TIM2);
 
@@ -20,24 +20,25 @@ void EXTI0_1_IRQHandler(void) {
   else if (rot == LL_TIM_COUNTERMODE_UP && state_encoder.counter_cur < state_encoder.counter_max)
     state_encoder.counter_cur++;
 
-  if (state_encoder.status == Left && state_encoder.counter_cur > state_encoder.delta)
+  if (state_encoder.status == !Right && state_encoder.counter_cur > state_encoder.delta) {
     state_encoder.status = Turn_right;
-  else if (state_encoder.status == Right &&
-           state_encoder.counter_cur < state_encoder.counter_max - state_encoder.delta)
+    if (Encoder_handler_turn_right_ != NULL)
+      Encoder_handler_turn_right_(NULL);
+  } else if (state_encoder.status == !Left &&
+             state_encoder.counter_cur < state_encoder.counter_max - state_encoder.delta) {
     state_encoder.status = Turn_left;
-  else if ((state_encoder.status == Turn_left || state_encoder.status == Undefined) &&
-           state_encoder.counter_cur < state_encoder.delta)
+    if (Encoder_handler_turn_left_ != NULL)
+      Encoder_handler_turn_left_(NULL);
+  } else if ((state_encoder.status == Turn_left || state_encoder.status == Undefined) &&
+             state_encoder.counter_cur < state_encoder.delta) {
     state_encoder.status = Left;
-  else if ((state_encoder.status == Turn_right || state_encoder.status == Undefined) &&
-           state_encoder.counter_cur > state_encoder.counter_max - state_encoder.delta)
+    if (Encoder_handler_left_ != NULL)
+      Encoder_handler_left_(NULL);
+  } else if ((state_encoder.status == Turn_right || state_encoder.status == Undefined) &&
+             state_encoder.counter_cur > state_encoder.counter_max - state_encoder.delta) {
     state_encoder.status = Right;
-
-  if (state_encoder.status == Right) {
-    LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_4);
-    LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_3);
-  } else if (state_encoder.status == Left) {
-    LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_3);
-    LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_4);
+    if (Encoder_handler_right_ != NULL)
+      Encoder_handler_right_(NULL);
   }
 
   LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_1);
@@ -47,26 +48,26 @@ void EXTI0_1_IRQHandler(void) {
 // ====================
 // BUTTON HANDLER
 
-void EXTI2_3_IRQHandler(void) {
-  if (LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_2) == 0)
-    return;
+// void EXTI2_3_IRQHandler(void) {
+//   if (LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_2) == 0)
+//     return;
 
-  //   static ButtonState state_button = {0, 10, 5, Off};
+//   //   static ButtonState state_button = {0, 10, 5, Off};
 
-  //   if (LL_GPIO_IsInputPinSet(GPIOA, PIN_2)) {
-  //     if (state_button.status == On)
-  //       state_button.status = On;
-  //     else
-  //       state_button.status = Off;
-  //   }
+//   //   if (LL_GPIO_IsInputPinSet(GPIOA, PIN_2)) {
+//   //     if (state_button.status == On)
+//   //       state_button.status = On;
+//   //     else
+//   //       state_button.status = Off;
+//   //   }
 
-  //   if (state_button.status == On) {
-  //     LL_GPIO_SetOutputPin(GPIOB, PIN_15);
-  //   } else if (state_button.status == Off) {
-  //     LL_GPIO_ResetOutputPin(GPIOB, PIN_15);
-  //   }
+//   //   if (state_button.status == On) {
+//   //     LL_GPIO_SetOutputPin(GPIOB, PIN_15);
+//   //   } else if (state_button.status == Off) {
+//   //     LL_GPIO_ResetOutputPin(GPIOB, PIN_15);
+//   //   }
 
-  LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_2);
-}
+//   LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_2);
+// }
 
 #endif

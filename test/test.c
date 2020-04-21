@@ -163,24 +163,20 @@ static void f(int port) {
   }
 }
 
+#include "../game/components/factories.h"
+#include "../game/components/game-loop.h"
+
 int main() {
-  entity* battlefield = initialize_battlefield();
-  print_battlefield(battlefield);
+  Game_StartupInit();
+  pont();
 
-  for (uint8_t i = 0; i < 16; i++) {
-    printf("%d / 8 = %d\n", i, i / 8);
+  for (int i = 0; i < 100; i++) {
+    Game_MoveEntities();
+    Game_ResolveCollisions();
+    Game_UpdateEntities();
+    Game_SpawnEntities(0);
   }
-
-  f(1);
-
-  f(1);
-  f(2);
-  f(3);
-  f(2);
-  f(1);
-  f(1);
-  f(1);
-  f(1);
+  pont();
 
   // for (int i = 0; i < 16; i++)
   // {

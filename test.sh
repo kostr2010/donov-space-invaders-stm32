@@ -1,0 +1,1 @@
+clear && gcc -o ./test/test ./test/test.c && ./test/test
