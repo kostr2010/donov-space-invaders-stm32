@@ -468,9 +468,9 @@ void Game_DrawWin() {
   oled_clr(clBlack);
   oled_set_cursor(0, 0);
 
-  xprintf("          U\n"
-          "         WON\n"
-          "      try again?");
+  xprintf("         U\n"
+          "        WON\n"
+          "     try again?");
 }
 
 #endif
