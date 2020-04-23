@@ -7,4 +7,7 @@
 // ====================
 // OLED
 
+// using manufacturer provided low-level library, because it suits our needs pretty well and there
+// is no reason to remaster it
+
 #endif
