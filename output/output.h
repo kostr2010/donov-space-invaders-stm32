@@ -11,9 +11,9 @@
 
 #include "../device-drivers/oled.h"
 
-// ====================
-// 7SEGM
+// // ====================
+// // 7SEGM
 
-#include "../device-drivers/7segm.h"
+// #include "../device-drivers/7segm.h"
 
 #endif

@@ -417,6 +417,9 @@ void Game_DrawPlayerMissle(uint8_t x, uint8_t y) {
 
 void Game_DrawBattlefield() {
   oled_clr(clBlack);
+  oled_set_cursor(0, 0);
+
+  xprintf("HP\n%d", game.player.hp);
 
   for (short int i = game.enemy_corvettes_first; i != game.enemy_corvettes_free;
        i           = game.enemy_corvettes_next[i]) {
@@ -439,6 +442,9 @@ void Game_DrawBattlefield() {
 }
 
 void Game_DrawStartScreen() {
+  oled_clr(clBlack);
+  oled_set_cursor(0, 0);
+
   xprintf("        WELCOM\n"
           "          TO\n"
           "   'SPACE INVADERS'\n\n");
@@ -448,12 +454,20 @@ void Game_DrawStartScreen() {
 }
 
 void Game_DrawDefeat() {
+  oled_clr(clBlack);
+  oled_set_cursor(0, 0);
+
   xprintf("          U\n"
           "         DED\n"
-          "      try again?");
+          "   `and scored %4d"
+          "      try again?",
+          game.score);
 }
 
 void Game_DrawWin() {
+  oled_clr(clBlack);
+  oled_set_cursor(0, 0);
+
   xprintf("          U\n"
           "         WON\n"
           "      try again?");

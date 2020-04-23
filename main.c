@@ -17,13 +17,7 @@ int main() {
 
   SetButton(GPIOA, PIN_2);
   SetEncoder(GPIOA, TIM2, PIN_0, PIN_1);
-  SetSegm(GPIOC);
-  // SetDiode(GPIOB, PIN_15);
-  // SetDiode(GPIOB, PIN_3);
-  // SetDiode(GPIOB, PIN_4);
-  // SetDiode(GPIOB, PIN_5);
-  SetDiode(GPIOC, PIN_8);
-  // SetDiode(GPIOC, PIN_9);
+  // SetSegm(GPIOC);
 
   EXTI_config();
 
@@ -57,8 +51,6 @@ int main() {
     i++;
   }
 
-  oled_clr(clBlack);
-  oled_set_cursor(0, 0);
   if (game.status == Win)
     Game_DrawWin();
   else
@@ -66,8 +58,8 @@ int main() {
 
   oled_update();
 
-  while (1)
-    Segm_SetNum(GPIOC, game.score);
+  // while (1)
+  //   Segm_SetNum(GPIOC, game.score);
 
   return 0;
 }
