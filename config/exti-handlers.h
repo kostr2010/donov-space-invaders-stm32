@@ -11,7 +11,7 @@
 // ENCODER HANDLER
 
 void EXTI0_1_IRQHandler(void) {
-  static EncoderState state_encoder = {10, 20, 5, Undefined};
+  static EncoderState state_encoder = {5, 10, 1, Undefined};
 
   unsigned int rot = LL_TIM_GetCounterMode(TIM2);
 

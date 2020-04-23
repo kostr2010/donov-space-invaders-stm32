@@ -1,6 +1,8 @@
 #ifndef __GAME_LOOP_H_INCLUDED__
 #define __GAME_LOOP_H_INCLUDED__
 
+#include "../../device-drivers/button.h"
+#include "../../device-drivers/encoder.h"
 #include "./factories.h"
 #include "./game-instances.h"
 #include "./vis.h"
@@ -9,6 +11,28 @@
 //   int player_fire;
 //   int player_movement;
 // } GameState;
+
+void HandlerRight_Battle(void* params) {
+  game.player.v_x = 4;
+}
+
+void HandlerLeft_Battle(void* params) {
+  game.player.v_x = -4;
+}
+
+void HandlerOnPress_Battle(void* params) {
+  Game_SpawnPlayerMissle(game.player.pos_x + 1, game.player.pos_y + 4);
+  Game_SpawnPlayerMissle(game.player.pos_x + PLAYER_CORVETTE_WIDTH - 1, game.player.pos_y + 4);
+}
+
+void HandlerOnPress_Menu(void* params) {
+  Button_SetHandler_turn_on(HandlerOnPress_Battle);
+
+  Encoder_SetHandler_right(HandlerRight_Battle);
+  Encoder_SetHandler_left(HandlerLeft_Battle);
+
+  game.status = Running;
+}
 
 void Game_StartupInit() {
   for (int i = 0; i < MAX_ENEMY_CORVETTES; i++) {
@@ -41,8 +65,8 @@ void Game_StartupInit() {
   game.player_missles_first   = 0;
   game.player_missles_free    = 0;
 
-  game.score = 0;
-  game.flag  = 0;
+  game.score  = 0;
+  game.status = Menu;
 
   for (int i = 4 * 3; i < OLED_WIDTH; i += 4 * 8) {
     Game_SpawnEnemyCorvette(i, 4 * 1);
@@ -50,8 +74,10 @@ void Game_StartupInit() {
 
   Game_SpawnPlayerCorvette(4 * 14, OLED_HEIGHT - 4 * 3);
 
+  Button_SetHandler_turn_on(HandlerOnPress_Menu);
+
   oled_config(); // initializing display
-  // printf_config();
+  xdev_out(oled_putc);
   oled_clr(clBlack); // clears graphic display
 }
 
@@ -105,11 +131,11 @@ void Game_UpdateEntities() {
   int player_out_of_bounds_x = game.player.pos_x <= 0 || game.player.pos_x >= OLED_WIDTH;
 
   if (player_dead || player_out_of_bounds_x) {
-    game.flag = -1;
+    game.status = Defeat;
   }
 
   if (game.enemy_corvettes_first == game.enemy_corvettes_free) {
-    game.flag = 1;
+    game.status = Win;
   }
 }
 
@@ -216,7 +242,7 @@ void Game_SpawnEntities(uint8_t loop) {
   } else {
     for (int i = game.enemy_corvettes_first; i != game.enemy_corvettes_free;
          i     = game.enemy_corvettes_next[i])
-      if (game.enemy_corvettes[i].pos_y < ENEMY_CORVETTE_LENGTH + 4 * 4)
+      if (game.enemy_corvettes[i].pos_y < ENEMY_CORVETTE_LENGTH + 4 * 3)
         flag_first_row_busy = 1;
   }
 

@@ -2,7 +2,7 @@
 #define __7SEGM_H_INCLUDED__
 
 #include "../config/config.h"
-#include "../config/inti-handlers.h"
+//#include "../config/inti-handlers.h"
 
 // ====================
 // 7SEGM
@@ -20,11 +20,11 @@
 #define DIGIT3 PIN_8
 #define DIGIT4 PIN_6
 
-uint32_t SEGM_USED_PINS = DIOD_E | DIOD_D | DIOD_DP | DIOD_C | DIOD_G | DIGIT4 | DIOD_B | DIGIT3 |
-                          DIGIT2 | DIOD_F | DIOD_A |
-                          DIGIT1; // putting all pins togrther with | - byte "or"
+const uint32_t SEGM_USED_PINS = DIOD_E | DIOD_D | DIOD_DP | DIOD_C | DIOD_G | DIGIT4 | DIOD_B |
+                                DIGIT3 | DIGIT2 | DIOD_F | DIOD_A |
+                                DIGIT1; // putting all pins togrther with | - byte "or"
 
-unsigned int SEGM_LETTERS[] = {
+const unsigned int SEGM_LETTERS[] = {
     DIOD_A | DIOD_B | DIOD_C | DIOD_E | DIOD_F | DIOD_G,          // A
     DIOD_A | DIOD_B | DIOD_C | DIOD_D | DIOD_E | DIOD_F | DIOD_G, // B
     DIOD_A | DIOD_D | DIOD_E | DIOD_F,                            // C
@@ -53,7 +53,7 @@ unsigned int SEGM_LETTERS[] = {
     DIOD_A | DIOD_B | DIOD_D | DIOD_E | DIOD_G                    // Z
 };
 
-uint32_t SEGM_SYMBOLS[] = {
+const uint32_t SEGM_SYMBOLS[] = {
     DIOD_G,                            // -
     DIOD_DP,                           // .
     DIOD_D,                            // _
@@ -62,7 +62,7 @@ uint32_t SEGM_SYMBOLS[] = {
                                        // " "
 };
 
-unsigned int SEGM_NUMBERS[] = {
+const unsigned int SEGM_NUMBERS[] = {
     DIOD_A | DIOD_B | DIOD_C | DIOD_D | DIOD_E | DIOD_F,          // 0
     DIOD_B | DIOD_C,                                              // 1
     DIOD_A | DIOD_B | DIOD_G | DIOD_E | DIOD_D,                   // 2
@@ -75,7 +75,7 @@ unsigned int SEGM_NUMBERS[] = {
     DIOD_A | DIOD_G | DIOD_B | DIOD_C | DIOD_D | DIOD_F           // 9
 };
 
-unsigned int SEGM_QUARTERS[] = {
+const unsigned int SEGM_QUARTERS[] = {
     DIGIT3 | DIGIT2 | DIGIT1, // only 4th digit (unitary)
     DIGIT4 | DIGIT2 | DIGIT1, // only 3d digit (decimals)
     DIGIT3 | DIGIT1 | DIGIT4, // only 2nd digit (centenials)
@@ -101,8 +101,9 @@ void SetSegm(GPIO_TypeDef* port) {
   LL_GPIO_SetPinMode(port, DIOD_DP, LL_GPIO_MODE_OUTPUT);
 }
 
+const uint32_t div[4] = {1, 10, 100, 1000};
+
 void Segm_SetNum(GPIO_TypeDef* port, uint32_t num) {
-  uint32_t div[4]     = {1, 10, 100, 1000};
   uint32_t port_state = LL_GPIO_ReadOutputPort(GPIOC);
   uint8_t  tick_cur   = SysTick_GetTick() % 4;
   uint32_t num_cur    = (num / div[tick_cur]) % 10;
