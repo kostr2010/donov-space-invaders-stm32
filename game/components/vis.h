@@ -459,7 +459,7 @@ void Game_DrawDefeat() {
 
   xprintf("          U\n"
           "         DED\n"
-          "   `and scored %4d"
+          "   and scored %4d"
           "      try again?",
           game.score);
 }

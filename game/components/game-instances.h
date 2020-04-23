@@ -15,11 +15,11 @@ const short int ENEMY_CORVETTE_LENGTH = 8;
 const short int ENEMY_CORVETTE_WIDTH  = 12;
 const short int ENEMY_CORVETTE_HP     = 1;
 
-const short int PLAYER_CORVETTE_START_X = 4 * 14;
-const short int PLAYER_CORVETTE_START_Y = OLED_HEIGHT - 4 * 3;
 const short int PLAYER_CORVETTE_LENGTH  = 8;
 const short int PLAYER_CORVETTE_WIDTH   = 16;
 const short int PLAYER_CORVETTE_HP      = 5;
+const short int PLAYER_CORVETTE_START_X = OLED_WIDTH / 2 - PLAYER_CORVETTE_WIDTH / 2;
+const short int PLAYER_CORVETTE_START_Y = OLED_HEIGHT - 4 * 3;
 
 const short int ENEMY_MISSLE_V_X    = 0;
 const short int ENEMY_MISSLE_V_Y    = 2;
