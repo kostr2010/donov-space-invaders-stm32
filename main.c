@@ -14,19 +14,35 @@ int main() {
                   LL_RCC_SYSCLK_DIV_1,
                   LL_RCC_APB1_DIV_1);
   SysTickConfig();
+ 
+  // Comrad Aleinik's device drivers:
+  SEG7_Config();
+  USART_Config();
 
+  // uint32_t baudrate = LL_USART_GetBaudRate(USART1, SystemCoreClock, LL_USART_OVERSAMPLING_8);
+  // for (int i = 0; i < 800000; i = (i + 1) % 800000)
+  // {
+  //   if (i == 0)
+  //     SEG7_SetNumber(baudrate / 10000);
+
+  //   if (i == 400000)
+  //     SEG7_SetNumber(baudrate % 10000);
+  // }
+  // Comrad Nazarov's device drivers:
   SetButton(GPIOA, PIN_2);
   SetEncoder(GPIOA, TIM2, PIN_0, PIN_1);
-  // SetSegm(GPIOC);
-
+  
   EXTI_config();
 
+  // Start Game:
+  VGA_RenderClear();
   Game_StartupInit();
   Game_DrawStartScreen();
-  oled_update();
 
-  while (game.status == Menu)
-    ;
+  USART_PushData();
+  oled_update(); 
+
+  while (game.status == Menu);
 
   Button_SetHandler_turn_on(HandlerOnPress_Battle);
 
@@ -35,20 +51,17 @@ int main() {
 
   Game_DrawBattlefield();
 
-  int i = 0;
-
-  while (game.status == Running) {
+  for (int i = 0; game.status == Running; ++i) {
     Game_MoveEntities();
     Game_SpawnEntities(i);
+
+    VGA_RenderClear();
     Game_DrawBattlefield();
     Game_ResolveCollisions();
     Game_UpdateEntities();
 
     // delay
-    for (int j = 0; j < 1000; j++)
-      ;
-
-    i++;
+    for (int j = 0; j < 1000; j++);
   }
 
   if (game.status == Win)
@@ -56,10 +69,8 @@ int main() {
   else
     Game_DrawDefeat();
 
+  USART_PushData();
   oled_update();
-
-  // while (1)
-  //   Segm_SetNum(GPIOC, game.score);
 
   return 0;
 }

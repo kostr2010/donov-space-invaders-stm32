@@ -5,9 +5,13 @@
 #include "../../lib/xprintf.h"
 #include "./game-instances.h"
 
+#include "../../device-drivers/VgaScreenControl.h"
+
 void Game_DrawEnemyCorvette(uint8_t x, uint8_t y) {
   x += ENEMY_CORVETTE_WIDTH / 2;
   y += ENEMY_CORVETTE_LENGTH / 2;
+
+  VGA_RenderEnemyCorvette(x, y);
 
   oled_set_pix(x, y, clWhite);
   oled_set_pix(x, y - 1, clWhite);
@@ -318,12 +322,16 @@ void Game_DrawEnemyMissle(uint8_t x, uint8_t y) {
   x += ENEMY_MISSLE_WIDTH / 2;
   y += ENEMY_MISSLE_LENGTH / 2;
 
+  VGA_RenderEnemyProjectile(x, y);
+
   oled_set_pix(x, y, clWhite);
 }
 
 void Game_DrawPlayer(uint8_t x, uint8_t y) {
   x += PLAYER_CORVETTE_WIDTH / 2;
   y += PLAYER_CORVETTE_LENGTH / 2;
+
+  VGA_RenderPlayerShip(x, y);
 
   oled_set_pix(x, y, clWhite);
   oled_set_pix(x, y + 1, clWhite);
@@ -408,6 +416,8 @@ void Game_DrawPlayerMissle(uint8_t x, uint8_t y) {
   x += PLAYER_MISSLE_WIDTH / 2;
   y += PLAYER_MISSLE_LENGTH / 2;
 
+  VGA_RenderPlayerProjectile(x, y);
+
   // oled_set_pix(x, y + 2, clWhite);
   oled_set_pix(x, y + 1, clWhite);
   oled_set_pix(x, y, clWhite);
@@ -438,6 +448,7 @@ void Game_DrawBattlefield() {
 
   Game_DrawPlayer(game.player.pos_x, game.player.pos_y);
 
+  USART_PushData();
   oled_update();
 }
 
@@ -451,9 +462,12 @@ void Game_DrawStartScreen() {
   xprintf("press button to start\n");
 
   Game_DrawPlayer(PLAYER_CORVETTE_START_X, PLAYER_CORVETTE_START_Y);
+  VGA_RenderStartScreen();
 }
 
 void Game_DrawDefeat() {
+  VGA_RenderDeathScreen();
+
   oled_clr(clBlack);
   oled_set_cursor(0, 0);
 

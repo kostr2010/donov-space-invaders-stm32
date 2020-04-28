@@ -11,9 +11,19 @@
 
 #include "../device-drivers/oled.h"
 
-// // ====================
-// // 7SEGM
+// ====================
+// 7SEGM
 
-// #include "../device-drivers/7segm.h"
+#include "../device-drivers/SEG7.h"
+
+// ====================
+// UART
+
+#include "../device-drivers/USART.h"
+
+// ====================
+// VGA
+
+#include "../device-drivers/VgaScreenControl.h"
 
 #endif

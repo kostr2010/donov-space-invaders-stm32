@@ -181,7 +181,7 @@ void Game_ResolveCollisions() {
         game.enemy_corvettes[i].hp -= PLAYER_MISSLE_HP;
         game.player_missles[j].hp -= ENEMY_CORVETTE_HP;
 
-        game.score += 25;
+        game.score += 5;
 
         break;
       }
@@ -214,7 +214,7 @@ void Game_ResolveCollisions() {
         game.enemy_missles[i].hp -= PLAYER_MISSLE_HP;
         game.player_missles[j].hp -= ENEMY_MISSLE_HP;
 
-        game.score += 5;
+        game.score += 1;
 
         break;
       }

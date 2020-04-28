@@ -3,9 +3,9 @@
 
 #include <stdint.h>
 
-// #include "../device-drivers/7segm.h"
 #include "../device-drivers/button.h"
-// #include "../game/components/game-instances.h"
+#include "../device-drivers/SEG7.h"
+#include "../game/components/game-instances.h"
 #include "./config.h"
 
 // ====================
@@ -14,9 +14,13 @@
 static uint32_t tick = 0;
 
 void TIM1_BRK_UP_TRG_COM_IRQHandler(void) {
+  LL_TIM_ClearFlag_UPDATE(TIM1);
+
   Button_UpdateState(GPIOA, PIN_2);
 
-  LL_TIM_ClearFlag_UPDATE(TIM1);
+  SEG7_SetNumber(game.score);
+  SEG7_SetNumberQuarter(tick);
+  SEG7_PushDisplayStateToMC();
 
   tick = (tick + 1) % 1000;
 }

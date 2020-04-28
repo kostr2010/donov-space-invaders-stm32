@@ -103,12 +103,11 @@ void SetSegm(GPIO_TypeDef* port) {
 
 const uint32_t div[4] = {1, 10, 100, 1000};
 
-void Segm_SetNum(GPIO_TypeDef* port, uint32_t num) {
+void Segm_SetNum(GPIO_TypeDef* port, uint32_t num, uint8_t tick_cur) {
   uint32_t port_state = LL_GPIO_ReadOutputPort(GPIOC);
-  uint8_t  tick_cur   = SysTick_GetTick() % 4;
-  uint32_t num_cur    = (num / div[tick_cur]) % 10;
+  uint32_t num_cur    = (num / div[tick_cur % 4]) % 10;
 
-  port_state = (port_state & ~SEGM_USED_PINS) | SEGM_NUMBERS[num_cur] | SEGM_QUARTERS[tick_cur];
+  port_state = (port_state & ~SEGM_USED_PINS) | SEGM_NUMBERS[0] | SEGM_QUARTERS[tick_cur];
 
   LL_GPIO_WriteOutputPort(port, port_state);
 

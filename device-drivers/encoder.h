@@ -36,8 +36,8 @@ int SetEncoder(GPIO_TypeDef* port, TIM_TypeDef* timer, unsigned int pin_l, unsig
   LL_GPIO_SetPinMode(port, pin_l, LL_GPIO_MODE_ALTERNATE);
   LL_GPIO_SetAFPin_0_7(port, pin_r, LL_GPIO_AF_2);
   LL_GPIO_SetAFPin_0_7(port, pin_l, LL_GPIO_AF_2);
-  LL_GPIO_SetPinPull(port, pin_r, LL_GPIO_PULL_UP);
-  LL_GPIO_SetPinPull(port, pin_l, LL_GPIO_PULL_UP);
+  LL_GPIO_SetPinPull(port, pin_r, LL_GPIO_PULL_DOWN);
+  LL_GPIO_SetPinPull(port, pin_l, LL_GPIO_PULL_DOWN);
 
   TimerX_EnableClock(timer);
 

@@ -20,7 +20,7 @@ SOURCES_C += $(SOURCES_CORE)
 SOURCES_C += $(SOURCES_PERIPH)
 SOURCES_C += $(SOURCES_LIB)
  
-DEPS = ./output/output.h ./input/input.h ./config/config.h ./device-drivers/7segm.h ./device-drivers/button.h ./device-drivers/diode.h ./device-drivers/encoder.h ./device-drivers/oled.h ./device-drivers/usart.h
+DEPS = ./output/output.h ./input/input.h ./config/config.h ./device-drivers/SEG7.h ./device-drivers/button.h ./device-drivers/diode.h ./device-drivers/encoder.h ./device-drivers/oled.h ./device-drivers/USART.h ./device-drivers/VgaScreenControl.h
 SOURCES = $(SOURCES_S) $(SOURCES_C)
 OBJS = $(SOURCES_S:.s=.o) $(SOURCES_C:.c=.o)
 

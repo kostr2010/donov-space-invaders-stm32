@@ -18,7 +18,7 @@ const short int ENEMY_CORVETTE_HP     = 1;
 const short int PLAYER_CORVETTE_LENGTH  = 8;
 const short int PLAYER_CORVETTE_WIDTH   = 16;
 const short int PLAYER_CORVETTE_HP      = 5;
-const short int PLAYER_CORVETTE_START_X = OLED_WIDTH / 2 - PLAYER_CORVETTE_WIDTH / 2;
+const short int PLAYER_CORVETTE_START_X = 64 - 8; // OLED_WIDTH / 2 - PLAYER_CORVETTE_WIDTH / 2;
 const short int PLAYER_CORVETTE_START_Y = OLED_HEIGHT - 4 * 3;
 
 const short int ENEMY_MISSLE_V_X    = 0;
